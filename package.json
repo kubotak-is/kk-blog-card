@@ -1,0 +1,32 @@
+{
+  "name": "blog-card-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kubotak-is/blog-card-js.git",
+  "author": "kubotak-is <kubotak@istyle.co.jp>",
+  "license": "MIT",
+  "scripts": {
+    "bundle:rollup": "rollup -c",
+    "build": "yarn run bundle:rollup",
+    "server": "http-server ./"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "http-server": "^0.11.1",
+    "node-sass": "^4.7.2",
+    "rollup": "^0.55.5",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-node-resolve": "^3.0.2",
+    "rollup-plugin-svelte": "^4.0.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "svelte": "^1.55.0",
+    "svelte-preprocess-sass": "^0.1.0"
+  },
+  "dependencies": {
+    "fetch-polyfill": "^0.8.2",
+    "object-fit-images": "^3.2.3"
+  }
+}

@@ -1,0 +1,152 @@
+<div class="blog-card {{ type }}">
+  {{#if loaded}}
+  <div class="container">
+    <div class="thumbnail">
+      <a href="{{ url }}" target="_brank"><img src="{{ image }}" alt="{{ title }}"></a>
+    </div>
+    <div class="contents">
+      <div>
+        <a href="{{ url }}" class="title" target="_brank">{{ title }}</a>
+      </div>
+      <div>
+          <p class="description">{{ description }}</p>
+      </div>
+      <div>
+        {{#if favicon !== ""}}
+        <img src="{{ favicon }}" alt="{{ site_name ? site_name : site_url }}" width="16" height="16" class="favicon">
+        {{/if}}
+        <a href="{{ site_url }}" class="site_url" target="_brank">{{ site_name ? site_name : site_url }}</a>
+      </div>
+    </div>
+  </div>
+  {{else}}
+  <div class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+  {{/if}}
+</div>
+
+
+<style lang="sass">
+.blog-card {
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1600 - 300)));
+  min-width: 300px;
+  max-width: 600px;
+  height: 150px;
+  margin: 20px 0;
+  display: block;
+}
+/* reset */
+.blog-card img, .blog-card a, .blog-card p {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+.blog-card a, .blog-card a:visited {
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.blog-card.fb {
+  box-shadow: 1px 1px 5px #eeeeee;
+}
+.container {
+  display: flex;
+}
+.thumbnail {
+  flex: 1;
+}
+.thumbnail a, .thumbnail img {
+  width: 150px;
+  height: 150px;
+  display: block;
+}
+.thumbnail img {
+  object-fit: cover;
+}
+.contents {
+  flex: 2;
+  flex-basis: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.contents > div:last-child {
+  margin-top: auto;
+}
+a.title {
+  color: #111111;
+  font-size: 1em;
+  font-weight: bold;
+}
+a.title:hover {
+  text-decoration: underline;
+}
+p.description {
+  padding: 5px 0;
+  line-height: 1.5;
+  font-size: 0.8em;
+}
+a.site_url {
+  color: #555555;
+  font-size: 0.7em;
+}
+
+.spinner {
+  margin: 0 auto;
+  padding: 65px 0 0;
+  width: 50px;
+  text-align: center;
+}
+.spinner > div {
+  width: 10px;
+  height: 10px;
+  background-color: #999999;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+.spinner > .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.spinner > .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+</style>
+
+<script>
+  export default {
+    data() {
+      return {
+        loaded: false,
+        type: "fb",
+        float: "center",
+        url: "",
+        image: "",
+        title: "",
+        favicon: "",
+        site_url: "",
+        site_name: "",
+        description: ""
+      }
+    }
+  }
+</script>
