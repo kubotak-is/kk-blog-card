@@ -58,19 +58,15 @@ class JSON_REST_API_Kk_Blog_Card_Generator
    */
   public function fetch()
   {
-    $curl = curl_init($this->url);
-    curl_setopt($curl, CURLOPT_FAILONERROR, true);
-    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-    curl_setopt($curl, CURLOPT_ENCODING, "UTF-8");
-    $response = curl_exec($curl);
-    curl_close($curl);
-    if (!empty($response)) {
-      $this->htmlParse($response);
+    $response = wp_remote_get($this->url, [
+      'timeout' => '10'
+    ]);
+    if (is_wp_error($response) || $response['response']['code'] !== 200 ) {
+      return;
+    }
+    $body = wp_remote_retrieve_body($response);
+    if (!empty($body)) {
+      $this->htmlParse($body);
     }
   }
 
@@ -85,40 +81,40 @@ class JSON_REST_API_Kk_Blog_Card_Generator
 
     $old_libxml_error = libxml_use_internal_errors(true);
 
-		$doc = new DOMDocument();
+    $doc = new DOMDocument();
     $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
-    
+
     libxml_use_internal_errors($old_libxml_error);
-		
-		$tags = $doc->getElementsByTagName('meta');
-		if (!$tags || $tags->length === 0) {
-			return false;
+
+    $tags = $doc->getElementsByTagName('meta');
+    if (!$tags || $tags->length === 0) {
+      return false;
     }
-    
+
     foreach ($tags as $tag) {
-			if ($tag->hasAttribute('property') &&
+      if ($tag->hasAttribute('property') &&
           strpos($tag->getAttribute('property'), 'og:') === 0
       ) {
-				$key = strtr(substr($tag->getAttribute('property'), 3), '-', '_');
+        $key = strtr(substr($tag->getAttribute('property'), 3), '-', '_');
         $this->values[$key] = $tag->getAttribute('content');
-			}
-			
+      }
+
       if ($tag ->hasAttribute('value') &&
           $tag->hasAttribute('property') &&
           strpos($tag->getAttribute('property'), 'og:') === 0
       ) {
-				$key = strtr(substr($tag->getAttribute('property'), 3), '-', '_');
-				$this->values[$key] = $tag->getAttribute('value');
+        $key = strtr(substr($tag->getAttribute('property'), 3), '-', '_');
+        $this->values[$key] = $tag->getAttribute('value');
       }
-      
+
       if ($tag->hasAttribute('name') &&
           $tag->getAttribute('name') === 'description'
       ) {
         $nonOgDescription = $tag->getAttribute('content');
       }
-		}
-		
-		if (!isset($this->values['title'])) {
+    }
+
+    if (!isset($this->values['title'])) {
       $titles = $doc->getElementsByTagName('title');
       if ($titles->length > 0) {
         $this->values['title'] = $titles->item(0)->textContent;

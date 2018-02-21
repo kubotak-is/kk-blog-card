@@ -13,7 +13,7 @@ require_once __DIR__ . "/kk-blog-card-api.php";
 add_action('wp_enqueue_scripts', function() {
   wp_enqueue_script(
     'kk-blog-card'
-    , get_option('siteurl').'/wp-content/plugins/kk-blog-card/index.js'
+    , plugins_url('/index.js', __FILE__)
     , []
     , '1.0.0'
     , true
