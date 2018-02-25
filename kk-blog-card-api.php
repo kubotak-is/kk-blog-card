@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . "/kk-blog-card-cache.php";
+
 add_action('rest_api_init', function() {
   register_rest_route('v1', '/kkblogcard', [
     'methods' => WP_REST_Server::READABLE,
@@ -15,13 +17,27 @@ add_action('rest_api_init', function() {
 });
 
 function kk_blog_card_func(WP_REST_Request $request) {
-  $url = $request->get_params("url");
-  $gen = new JSON_REST_API_Kk_Blog_Card_Generator(strval($url['url']));
-  $gen->fetch();
-  $response = new WP_REST_Response($gen->getValues());
-  if (empty($gen->getValues())) {
-    $response->set_status(404);
+  $url      = $request->get_params("url");
+  $urlStr   = strval($url['url']);
+  $gen      = new JSON_REST_API_Kk_Blog_Card_Generator($urlStr);
+  $cache    = new KK_Blog_Caed_Cache();
+  $response = new WP_REST_Response();
+
+  if ($cache->has($urlStr)) {
+    // has cache
+    $value = json_decode($cache->get($urlStr), true);
+  } else {
+    // has not cache
+    $gen->fetch();
+    $value = $gen->getValues();
+    if (empty($value)) {
+      $response->set_status(404);
+    } else {
+      $cache->put($urlStr, json_encode($value));
+    }
   }
+
+  $response->set_data($value);
   return $response;
 }
 

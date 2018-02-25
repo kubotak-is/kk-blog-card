@@ -4,7 +4,7 @@ Donate link:
 Tags: blogcard, linkcard
 Requires at least: 4.9.4
 Tested up to: 4.9.4
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,10 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 `[blog-card href=""]`
 
 リンクさせたいページのURLを`href`に設定してください。
-非同期でブログカードが生成されるのでページの表示速度を損なうことを最小限に設計されています。
+非同期でブログカードが生成されるのでページの表示速度を損なうことは最小限に設計されています。
+
+Attention
+ブログカード生成時に取得したリンクサイトのデータは1日間保持されます。
 
 == Installation ==
 
@@ -36,7 +39,8 @@ An answer to that question.
 2. 
 
 == Changelog ==
-
+### ver 1.1
+* キャッシュ機能の追加
 
 
 == Upgrade notice ==
