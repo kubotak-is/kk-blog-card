@@ -1,6 +1,6 @@
 <?php
 
-class KK_Blog_Caed_Cache {
+class KK_Blog_Card_Cache {
 
   const CACHE_TIME = "-1 days";
 
