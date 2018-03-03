@@ -117,7 +117,10 @@ class KK_Blog_Card_Parser {
         continue;
       }
       $faviconUrl = $domattr->value;
-      if (!filter_var($faviconUrl, FILTER_VALIDATE_URL)) {
+      if (
+        substr($faviconUrl, 0, 2) !== '//' &&
+        !filter_var($faviconUrl, FILTER_VALIDATE_URL)
+      ) {
         $faviconUrl = $this->values['site_url'] . ltrim($faviconUrl, '/');
       }
       $this->values['favicon'] = $faviconUrl;
