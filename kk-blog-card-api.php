@@ -5,7 +5,7 @@ require_once __DIR__ . "/kk-blog-card-parser.php";
 
 add_action('rest_api_init', function() {
   register_rest_route('v1', '/kkblogcard', [
-    'methods' => WP_REST_Server::READABLE,
+    'methods' => WP_REST_Server::CREATABLE,
     'callback' => 'kk_blog_card_func',
     'args' => [
       'url' => [
@@ -18,8 +18,8 @@ add_action('rest_api_init', function() {
 });
 
 function kk_blog_card_func(WP_REST_Request $request) {
-  $url      = $request->get_params("url");
-  $urlStr   = strval($url['url']);
+  $json     = $request->get_params("JSON");
+  $urlStr   = strval($json['url']);
   $gen      = new KK_Blog_Card_Parser($urlStr);
   $cache    = new KK_Blog_Card_Cache();
   $response = new WP_REST_Response();
