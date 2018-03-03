@@ -1,23 +1,41 @@
 import Card from './Card.html';
+import NotFound from './NotFound.html';
+import cardTypes from '../cardTypes';
 
 const targets = document.getElementsByTagName('blog-card');
+const targetType = Array.from(cardTypes.keys());
 
 Object.keys(targets).forEach(index => {
 
-  let url = targets[index].getAttribute('href');
+  let url  = targets[index].getAttribute('href');
+  let type = targets[index].dataset.type;
+
+  // 未定義のtypeの場合はdefault:fbにする
+  if (!targetType.includes(type)) {
+    type = "fb";
+  }
 
   let Component = new Card({
     target: targets[index],
     data: {
-      url: url
+      url: url,
+      type: type,
     }
   });
 
-  fetch(`${location.origin}/wp-json/v1/kkblogcard?url=${url}`)
+  fetch(`${location.origin}/wp-json/v1/kkblogcard`, {
+    method: 'POST',
+    body: JSON.stringify({url: url}),
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    })
+  })
   .then(response => {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
     return response.json();
   }).then(json => {
-    console.log(json);
     Component.set({
       loaded: true,
       title: json.title ? json.title : '',
@@ -30,6 +48,12 @@ Object.keys(targets).forEach(index => {
   }).catch(ex => {
     console.log('parsing failed', ex);
     Component.destroy();
+    new NotFound({
+      target: targets[index],
+      data: {
+        url: url,
+      }
+    });
   });
 
 });

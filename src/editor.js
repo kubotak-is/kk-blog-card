@@ -1,23 +1,26 @@
-(function() {
+import AddComponent from './Component/Add.js';
+
+let addTag = document.createElement(`add-blogcard`);
+document.body.appendChild(addTag);
+
+(() => {
   /* Register the buttons */
   tinymce.create('tinymce.plugins.BlogCardButtons', {
-      init : function(ed, url) {
+    init : (ed, url) => {
+      const addComponent = new AddComponent(ed);
       /**
       * Inserts shortcode content
       */
       ed.addButton('blogcard_shortcode', {
         title : 'BlogCard shortcode',
-        icon: 'code',
-        //  image : url + '/images/btn.png',
+        image : url + '/images/icon.svg',
         cmd: 'blogcard_shortcode_cmd'
       });
-      ed.addCommand('blogcard_shortcode_cmd', function() {
-        var selected_text = ed.selection.getContent();
-        var return_text = '[blog-card href="'  + selected_text + '"]';
-        ed.execCommand('mceInsertContent', 0, return_text);
+      ed.addCommand('blogcard_shortcode_cmd', () => {
+        addComponent.show(ed.selection.getContent());
       });
     },
-    createControl : function(n, cm) {
+    createControl : (n, cm) => {
       return null;
     },
   });

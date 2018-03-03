@@ -1,0 +1,55 @@
+{{#if display }}
+<div class="blog-card-modal">
+  <div class="modal-header">
+    <div class="modal-header-left"><h3>Add Blog Card</h3></div>
+    <div class="modal-header-right">
+      <button on:click='set({display: false})' class="modal-close-btn">
+        <span class="close-icon"></span>
+        <span class="close-text">close blog card modal</span>
+      </button>
+    </div>
+  </div>
+  <div class="modal-main">
+    <dl class="modal-list">
+      <dd><input type="text" bind:value='url' placeholder="link url" class="modal-input-url"></dd>
+      <dt><label for="blog-card-type">Card Type</label></dt>
+      <dd>
+          <select bind:value='type' id="blog-card-type">
+            {{#each Array.from(cardTypes.keys()) as key}}
+              <option value="{{ key }}">{{ cardTypes.get(key) }}</option>
+            {{/each}}
+          </select>
+      </dd>
+    </dl>
+  </div>
+  <div class="modal-footer">
+    <input type="button" on:click='add(url)' value="add">
+  </div>
+</div>
+
+<div class="blog-card-backdrop" on:click='set({display: false})'></div>
+{{/if}}
+
+<style lang="sass">
+@import '../../scss/add.scss';
+</style>
+
+<script>
+  import cardTypes from '../cardTypes';
+  export default {
+    data() {
+      return {
+        cardTypes: cardTypes,
+        display: false,
+      }
+    },
+    methods: {
+      add(url) {
+        if (url === '') {
+          return;
+        }
+        this.fire('add');
+      }
+    }
+  };
+</script>
