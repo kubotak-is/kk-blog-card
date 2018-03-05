@@ -38,7 +38,7 @@ class KK_Blog_Card_Cache {
     return (bool) file_put_contents(
       $this->filePath($url),
       $val,
-      FILE_APPEND | LOCK_EX
+      LOCK_EX
     );
   }
 
