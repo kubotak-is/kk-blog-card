@@ -1,10 +1,10 @@
-=== kk blog card ===
+﻿=== kk blog card ===
 Contributors: kubotak
 Donate link: 
 Tags: blogcard, linkcard
 Requires at least: 4.9.4
 Tested up to: 4.9.4
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,10 @@ An answer to that question.
 * カードタイプ追加（facebook, twitter, hatena）
 * Addボタンの拡張
 * その他 bug fix
+
+### ver 1.3
+* bug fix キャッシュファイル作成不具合解消
+* その他 調整
 
 == Upgrade notice ==
 
